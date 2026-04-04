@@ -14,3 +14,6 @@ class Settings:
     mongo_host = os.getenv("MONGO_HOST")
     mongo_port = int(os.getenv("MONGO_PORT"))
     mongo_db_name = os.getenv("MONGO_DB_NAME")
+    mongo_username = os.getenv("MONGO_USERNAME")
+    mongo_password = os.getenv("MONGO_PASSWORD")
+    mongo_collection_name = os.getenv("MONGO_COLLECTION_NAME")
