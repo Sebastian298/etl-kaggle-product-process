@@ -3,7 +3,12 @@ from typing import Dict, Any
 from math import isnan
 
 from src.dtos.product_dto import ProductDTO
-from src.helpers.data_cleaners import clean_price
+from src.helpers.data_cleaners import (
+    clean_price, 
+    parse_json_safely, 
+    extract_sizes, 
+    extract_product_details_description
+)
 
 def clean_nan(val: Any) -> Any:
     """
@@ -34,6 +39,20 @@ def map_csv_row_to_dto(row: pd.Series) -> ProductDTO:
     # Specifically process price fields which may contain raw currencies / strings.
     row_dict['final_price'] = clean_price(row_dict.get('final_price'))
     row_dict['initial_price'] = clean_price(row_dict.get('initial_price'))
+    
+    # Deserialize JSON strings to proper objects/arrays
+    row_dict['amount_of_stars'] = parse_json_safely(row_dict.get('amount_of_stars'))
+    row_dict['best_offer'] = parse_json_safely(row_dict.get('best_offer'))
+    row_dict['breadcrumbs'] = parse_json_safely(row_dict.get('breadcrumbs'))
+    row_dict['delivery_options'] = parse_json_safely(row_dict.get('delivery_options'))
+    row_dict['more_offers'] = parse_json_safely(row_dict.get('more_offers'))
+    row_dict['product_specifications'] = parse_json_safely(row_dict.get('product_specifications'))
+    row_dict['videos'] = parse_json_safely(row_dict.get('videos'))
+    row_dict['variations'] = parse_json_safely(row_dict.get('variations'))
+    
+    # Extract specific nested values
+    row_dict['product_details'] = extract_product_details_description(row_dict.get('product_details'))
+    row_dict['sizes'] = extract_sizes(row_dict.get('sizes'))
     
     return ProductDTO(**row_dict)
 
