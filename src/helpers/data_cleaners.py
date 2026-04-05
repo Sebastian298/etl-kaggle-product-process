@@ -54,3 +54,15 @@ def extract_product_details_description(details_str: Any) -> Optional[str]:
     if isinstance(parsed, dict):
         return parsed.get("description")
     return None
+
+def clean_text_field(text: Any) -> Optional[str]:
+    """Removes weird symbols and special block characters from text."""
+    if text is None or str(text).lower() == 'nan':
+        return None
+    
+    # We strip out block characters like █ and keep standard letters, numbers and punctuation
+    cleaned = re.sub(r'[^\w\s.,?!@#$%&*()\-+=\'\"/:;]+', '', str(text))
+    # Remove extra spaces if any
+    cleaned = re.sub(r'\s+', ' ', cleaned)
+    
+    return cleaned.strip() if cleaned else None

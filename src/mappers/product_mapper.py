@@ -7,7 +7,8 @@ from src.helpers.data_cleaners import (
     clean_price, 
     parse_json_safely, 
     extract_sizes, 
-    extract_product_details_description
+    extract_product_details_description,
+    clean_text_field
 )
 
 def clean_nan(val: Any) -> Any:
@@ -53,6 +54,10 @@ def map_csv_row_to_dto(row: pd.Series) -> ProductDTO:
     # Extract specific nested values
     row_dict['product_details'] = extract_product_details_description(row_dict.get('product_details'))
     row_dict['sizes'] = extract_sizes(row_dict.get('sizes'))
+    
+    # Clean text anomalies
+    row_dict['seller_information'] = clean_text_field(row_dict.get('seller_information'))
+    row_dict['seller_name'] = clean_text_field(row_dict.get('seller_name'))
     
     return ProductDTO(**row_dict)
 
