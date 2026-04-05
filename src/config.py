@@ -10,6 +10,8 @@ class Settings:
     csv_encoding = "utf-8"
 
     kaggle_dataset = os.getenv("KAGGLE_DATASET")
+    kaggle_username = os.getenv("KAGGLE_USERNAME")
+    kaggle_key = os.getenv("KAGGLE_KEY")
 
     mongo_host = os.getenv("MONGO_HOST")
     mongo_port = int(os.getenv("MONGO_PORT"))
